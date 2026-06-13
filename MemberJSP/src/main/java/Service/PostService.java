@@ -1,0 +1,36 @@
+package Service;
+
+import DTO.PostDTO;
+
+import java.util.List;
+
+import DAO.PostDAO;
+
+public class PostService {
+	private PostDAO pao = new PostDAO();
+	
+	public boolean insertPost(PostDTO pto)
+	{
+		return pao.insertPost(pto);
+	}
+	
+	public List<PostDTO> selectShowPost()
+	{
+		return pao.selectShowPosts();
+	}
+	
+	public PostDTO selectPostDetail(int id)
+	{
+		return pao.selectPostDetail(id);
+	}
+	
+	public boolean deletePost(int id)
+	{
+		return pao.deletePost(id);
+	}
+	
+	public boolean updatePost(String title, String content, int post_id)
+	{
+		return pao.updatePost(title, content, post_id);
+	}
+}
