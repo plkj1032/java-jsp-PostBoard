@@ -2,16 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ page import="DTO.PostDTO" %>
 <%@ page import="java.util.List" %>
-<% List<PostDTO> list = 
+<% List<PostDTO> posts =
 (List<PostDTO>) request.getAttribute("posts"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 목록</title>
+<title>검색된 게시글 보기</title>
 </head>
 <body>
-
 <table border=1>
 <tr>
 	<th>게시글 번호</th>
@@ -21,15 +20,10 @@
 	<th>조회수</th>
 	<th>작성 시간</th>
 </tr>
-
-<% for(PostDTO p : list){ %>
+<% for(PostDTO p : posts){ %>
 <tr>
     <td><%= p.getId() %></td>
-    <td>
-    	<a href="PostDetail?id=<%= p.getId() %>">
-    	<%= p.getTitle() %>
-    	</a>
-    </td>
+    <td><%= p.getTitle() %></td>
     <td><%= p.getContent() %></td>
     <td><%= p.getPost_writer() %></td>
     <td><%= p.getView_count() %></td>
@@ -37,10 +31,6 @@
 </tr>
 <% } %>
 </table>
-<form action="PostSearch" method="get">
-	<input type="text" name="keyword" placeholder="검색어 입력">
-	<button type="submit">검색</button>
-</form>
-<a href="index.jsp">홈으로</a>
+
 </body>
 </html>

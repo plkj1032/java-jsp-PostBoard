@@ -7,21 +7,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import DTO.PostDTO;
 import Service.PostService;
 
 /**
- * Servlet implementation class PostDetailServlet
+ * Servlet implementation class PostSearchServlet
  */
-@WebServlet("/PostDetail")
-public class PostDetailServlet extends HttpServlet {
+@WebServlet("/PostSearch")
+public class PostSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostDetailServlet() {
+    public PostSearchServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,18 +32,29 @@ public class PostDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String id = request.getParameter("id");
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; UTF-8");
 		
-		System.out.println(id);
+		String keyword = request.getParameter("keyword");
 		
 		PostService service = new PostService();
 		
-		boolean check = service.updatePlusView(Integer.parseInt(id));
+		List<PostDTO> list = service.selectSeachPost(keyword);
 		
-		PostDTO post = service.selectPostDetail(Integer.parseInt(id));
+		if(list == null || list.isEmpty())
+		{
+			response.getWriter().println(
+					"<script>"
+					+ "alert('조회된 게시글이 없음!');"
+					+ "location.href='index.jsp';"
+					+ "</script>"
+					);
+			return;
+		}
 		
-		request.setAttribute("post", post);
-		RequestDispatcher rd = request.getRequestDispatcher("PostDetail.jsp");
+		request.setAttribute("posts",list);
+		RequestDispatcher rd = request.getRequestDispatcher("PostSearch.jsp");
 		
 		rd.forward(request, response);
 		

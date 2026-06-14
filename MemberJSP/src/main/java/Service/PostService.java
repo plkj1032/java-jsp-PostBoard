@@ -33,4 +33,12 @@ public class PostService {
 	{
 		return pao.updatePost(title, content, post_id);
 	}
+	public boolean updatePlusView(int id)
+	{
+		return pao.UpdatePlusView(id);
+	}
+	public List<PostDTO> selectSeachPost(String keyword)
+	{
+		return pao.selectSearchPost(keyword);
+	}
 }

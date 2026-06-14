@@ -43,7 +43,7 @@ public class PostDAO {
 	public List<PostDTO> selectShowPosts()
 	{
 		String sql = "SELECT p.id, p.title, p.content, m.name AS post_write, "
-				+ "p.created_at "
+				+ "p.created_at,p.view_count "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
 				+ "ORDER BY p.id";
@@ -66,6 +66,7 @@ public class PostDAO {
 				pto.setContent(rs.getString("content"));
 				pto.setPost_writer(rs.getString("post_write"));
 				pto.setCreated_at(rs.getString("created_at"));
+				pto.setView_count(rs.getInt("view_count"));
 				
 				list.add(pto);
 				
@@ -171,5 +172,74 @@ public class PostDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean UpdatePlusView(int id)
+	{
+		String sql = "UPDATE posts "
+				+ "SET view_count = view_count + 1 "
+				+ "WHERE id = ?";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				){
+			ps.setInt(1, id);
+			
+			int result = ps.executeUpdate();
+			
+			if(result > 0)
+			{
+				return true;
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public List<PostDTO> selectSearchPost(String keyword)
+	{
+		String sql = "SELECT p.id, p.title, p.content, m.name AS post_writer, "
+				+ "p.created_at, p.view_count "
+				+ "FROM posts p "
+				+ "JOIN members m ON p.member_id = m.id "
+				+ "WHERE p.title LIKE ? OR p.content LIKE ? "
+				+ "ORDER BY p.id DESC";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				){
+			ps.setString(1, "%" + keyword + "%");
+			ps.setString(2, "%" + keyword + "%");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			List<PostDTO> list = new ArrayList<>();
+			
+			while(rs.next())
+			{
+				PostDTO pto = new PostDTO();
+				
+				pto.setId(rs.getInt("id"));
+				pto.setTitle(rs.getString("title"));
+				pto.setContent(rs.getString("content"));
+				pto.setPost_writer(rs.getString("post_writer"));
+				pto.setCreated_at(rs.getString("created_at"));
+				pto.setView_count(rs.getInt("view_count"));
+				
+				list.add(pto);
+			}
+			return list;
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
