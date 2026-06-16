@@ -91,7 +91,7 @@ public class PostWriteServlet extends HttpServlet {
 			response.getWriter().println(
 					"<script>"
 					+ "alert('게시글 등록 완료!');"
-					+ "location.href='index.jsp';"
+					+ "location.href='PostList';"
 					+ "</script>"
 					);
 		}
@@ -100,7 +100,7 @@ public class PostWriteServlet extends HttpServlet {
 			response.getWriter().println(
 					"<script>"
 					+ "alert('게시글 등록 실패!');"
-					+ "location.href='index.jsp';"
+					+ "history.back();"
 					+ "</script>"
 					);
 		}

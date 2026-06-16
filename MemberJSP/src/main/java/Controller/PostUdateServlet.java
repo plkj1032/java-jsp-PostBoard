@@ -87,7 +87,7 @@ public class PostUdateServlet extends HttpServlet {
 			response.getWriter().println(
 					"<script>"
 					+ "alert('게시글 수정 완료!');"
-					+ "location.href='index.jsp';"
+					+ "location.href='PostDetail?id=" + id + "';"
 					+ "</script>"
 					);
 		}
@@ -96,7 +96,7 @@ public class PostUdateServlet extends HttpServlet {
 			response.getWriter().println(
 					"<script>"
 					+ "alert('게시글 수정 실패!');"
-					+ "location.href='index.jsp';"
+					+ "history.back();"
 					+ "</script>"
 					);
 		}
