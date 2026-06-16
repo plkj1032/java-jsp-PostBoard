@@ -40,22 +40,25 @@ public class PostDAO {
 		return false;
 	}
 	
-	public List<PostDTO> selectShowPosts()
+	public List<PostDTO> selectShowPosts(int offset, int size)
 	{
-		String sql = "SELECT p.id, p.title, p.content, m.name AS post_write, "
+		String sql = "SELECT p.id, p.title, m.name AS post_write, "
 				+ "p.created_at,p.view_count "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
-				+ "ORDER BY p.id";
+				+ "ORDER BY p.id "
+				+ "LIMIT ?,?";
 		List<PostDTO> list = new ArrayList<>();
 		
 		try(
 			Connection conn = DBConnection.getConnection();
 				
 			PreparedStatement ps = conn.prepareStatement(sql);
-				
-			ResultSet rs = ps.executeQuery();
 				){
+			ps.setInt(1, offset);
+			ps.setInt(2, size);
+			
+			ResultSet rs = ps.executeQuery();
 
 			while(rs.next())
 			{
@@ -63,7 +66,7 @@ public class PostDAO {
 				
 				pto.setId(rs.getInt("id"));
 				pto.setTitle(rs.getString("title"));
-				pto.setContent(rs.getString("content"));
+				//pto.setContent(rs.getString("content"));
 				pto.setPost_writer(rs.getString("post_write"));
 				pto.setCreated_at(rs.getString("created_at"));
 				pto.setView_count(rs.getInt("view_count"));
@@ -149,7 +152,7 @@ public class PostDAO {
 	
 	public boolean updatePost(String title, String content, int post_id)
 	{
-		String sql = "UPDATE posts SET title = ?, content = ? WHERE id = ?";
+		String sql = "UPDATE posts SET title = ? WHERE id = ?";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -157,8 +160,7 @@ public class PostDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 				){
 			ps.setString(1, title);
-			ps.setString(2, content);
-			ps.setInt(3, post_id);
+			ps.setInt(2, post_id);
 			
 			int result = ps.executeUpdate();
 			
@@ -241,5 +243,28 @@ public class PostDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public int selectPostCount()
+	{
+		String sql = "SELECT COUNT(*) AS COUNT FROM posts";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				
+			ResultSet rs = ps.executeQuery();
+				){
+			if(rs.next())
+			{
+				return rs.getInt("COUNT");
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

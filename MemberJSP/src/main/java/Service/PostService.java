@@ -14,9 +14,9 @@ public class PostService {
 		return pao.insertPost(pto);
 	}
 	
-	public List<PostDTO> selectShowPost()
+	public List<PostDTO> selectShowPost(int offset, int size)
 	{
-		return pao.selectShowPosts();
+		return pao.selectShowPosts(offset, size);
 	}
 	
 	public PostDTO selectPostDetail(int id)
@@ -40,5 +40,9 @@ public class PostService {
 	public List<PostDTO> selectSeachPost(String keyword)
 	{
 		return pao.selectSearchPost(keyword);
+	}
+	public int PostCount()
+	{
+		return pao.selectPostCount();
 	}
 }

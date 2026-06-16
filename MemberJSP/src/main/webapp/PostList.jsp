@@ -5,6 +5,9 @@
 <% 
     List<PostDTO> list = (List<PostDTO>) request.getAttribute("posts"); 
     MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+    Integer currentPage = (Integer) request.getAttribute("currentPage");
+    Integer totalPage = (Integer) request.getAttribute("totalPage");
+    Integer size = (Integer) request.getAttribute("size");
 %>
 <!DOCTYPE html>
 <html>
@@ -254,7 +257,7 @@
                         <tr>
                             <th style="width: 10%;">번호</th>
                             <th style="width: 25%;">제목</th>
-                            <th style="width: 30%;">내용</th>
+                            <!-- <th style="width: 30%;">내용</th> -->
                             <th style="width: 15%;">작성자</th>
                             <th style="width: 10%;">조회수</th>
                             <th style="width: 10%;">작성 시간</th>
@@ -270,7 +273,7 @@
                                         <%= p.getTitle() %>
                                     </a>
                                 </td>
-                                <td style="text-align: left; color: #6c757d;"><%= p.getContent() %></td>
+                                <!--  <td style="text-align: left; color: #6c757d;"><%= p.getContent() %></td> -->
                                 <td><%= p.getPost_writer() %></td>
                                 <td><%= p.getView_count() %></td>
                                 <td style="color: #868e96;"><%= p.getCreated_at() %></td>
@@ -283,6 +286,39 @@
                         <% } %>
                     </tbody>
                 </table>
+                
+                <div class="pagination">
+                <!-- 하하.. -->
+					<%
+					for(int i = 1; i <= totalPage; i++)
+					{
+						if( i == currentPage )
+						{
+							%>
+								<b><%= i %></b>
+							<%
+						}
+						else
+						{
+							%>
+							<a href="PostList?pageParam=<%= i %>&sizeParam=<%= size%>">
+								<%= i %>
+							</a>
+							<%
+						}
+					}%>
+				<form action="PostList" method="get">
+					<select name="sizeParam">
+						<option value="5">5개씩 보기</option>
+						<option value="10">10개씩 보기</option>
+						<option value="20">20개씩 보기</option>
+						<option value="50">50개씩 보기</option>
+					</select>
+					
+					<input type="hidden" name="pageParam" value="1">
+					<button type="submit">적용</button>
+				</form>
+                </div>
 
                 <div class="board-footer">
                     <form action="PostSearch" method="get" class="search-form">
@@ -300,6 +336,5 @@
         </main>
         
     </div>
-
 </body>
 </html>
