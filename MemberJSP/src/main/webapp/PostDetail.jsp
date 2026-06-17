@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="DTO.MemberDTO" %>
 <%@ page import="DTO.PostDTO" %>
+<%@ page import="DTO.CommentDTO" %>
+<%@ page import="java.util.List" %>
 <% 
     // 세션 및 요청 객체에서 데이터 가져오기
     MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
     PostDTO post = (PostDTO) request.getAttribute("post"); 
+    List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");  
 %>
 <!DOCTYPE html>
 <html>
@@ -246,6 +249,7 @@
                 </div>
 
                 <div class="post-content"><%= post.getContent() %></div>
+                
 
                 <div class="button-group">
                     <div class="left-btns">
@@ -263,6 +267,45 @@
                         <% } %>
                     </div>
                 </div>
+                
+                <div class="pagination">
+                	<form action="CommentWrite" method="post">
+                		<input type="hidden" name="post_id" value="<%= post.getId() %>">
+                		
+                		<textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+                		
+                		<% if(loginUser != null) {%>
+                		<button type="submit">댓글 등록</button>
+                		<%} else { %>
+                			<button type="button"
+                				onclick="alert('로그인 후 이용 가능합니다.'); location.href='Login.jsp';">
+                				댓글 등록
+                			</button>
+                		<%} %>
+                	
+                	</form>
+                </div>
+                
+               	<table border=1>
+               		<tr>
+               			<th>멤버 번호</th>
+               			<th>내용</th>
+               			<th>작성자</th>
+               			<th>작성시간</th>
+               		</tr>
+               		<% if( comments != null && !comments.isEmpty()) {%>
+                		<% for( CommentDTO c : comments) {%>
+                		<tr>
+                			<td><%= c.getMember_id() %></td>
+                			<td><%= c.getContent() %></td>
+                			<td><%= c.getWriter() %></td>
+                			<td><%= c.getCreated_at() %>
+                			<td></td>
+                		</tr>
+                		<%}  
+                		}%>
+               	</table>
+               
 
             </div>
         </main>

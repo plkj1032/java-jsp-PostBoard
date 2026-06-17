@@ -6,6 +6,10 @@
     // 요청(request)과 세션(session)에서 데이터 가져오기
     List<PostDTO> posts = (List<PostDTO>) request.getAttribute("posts"); 
     MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+    String keyword = (String) request.getAttribute("keyword");
+    Integer currentPage = (Integer) request.getAttribute("currentPage");
+    Integer totalPage = (Integer) request.getAttribute("totalPage");
+    Integer size = (Integer) request.getAttribute("size");
 %>
 <!DOCTYPE html>
 <html>
@@ -258,6 +262,40 @@
                         <% } %>
                     </tbody>
                 </table>
+                
+                <div class="pagination">
+                <!-- 하하.. -->
+					<%
+					for(int i = 1; i <= totalPage; i++)
+					{
+						if( i == currentPage )
+						{
+							%>
+								<b><%= i %></b>
+							<%
+						}
+						else
+						{
+							%>
+							<a href="PostSearch?pageParam=<%= i %>&sizeParam=<%= size%>&keyword=<%=keyword%>">
+								<%= i %>
+							</a>
+							<%
+						}
+					}%>
+				<form action="PostSearch" method="get">
+					<select name="sizeParam">
+						<option value="5">5개씩 보기</option>
+						<option value="10">10개씩 보기</option>
+						<option value="20">20개씩 보기</option>
+						<option value="50">50개씩 보기</option>
+					</select>
+					
+					<input type="hidden" name="keyword" value="<%=keyword %>">
+					<input type="hidden" name="pageParam" value="1">
+					<button type="submit">적용</button>
+				</form>
+                </div>
 
                 <div class="board-footer">
                     <div class="search-info-text">

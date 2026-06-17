@@ -202,14 +202,15 @@ public class PostDAO {
 		}
 		return false;
 	}
-	public List<PostDTO> selectSearchPost(String keyword)
+	public List<PostDTO> selectSearchPost(String keyword, int offset, int size)
 	{
 		String sql = "SELECT p.id, p.title, p.content, m.name AS post_writer, "
 				+ "p.created_at, p.view_count "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
-				+ "WHERE p.title LIKE ? OR p.content LIKE ? "
-				+ "ORDER BY p.id DESC";
+				+ "WHERE p.title LIKE ? "
+				+ "ORDER BY p.id ASC "
+				+ "LIMIT ?,?";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -217,7 +218,8 @@ public class PostDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 				){
 			ps.setString(1, "%" + keyword + "%");
-			ps.setString(2, "%" + keyword + "%");
+			ps.setInt(2, offset);
+			ps.setInt(3, size);
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -265,6 +267,31 @@ public class PostDAO {
 		{
 			e.printStackTrace();
 		}
+		return 0;
+	}
+	public int selectSearchPostCount(String keyword)
+	{
+		String sql = "SELECT COUNT(*) AS COUNT FROM posts WHERE title LIKE ?";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				){
+			ps.setString(1, "%" + keyword + "%");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+				return rs.getInt("COUNT");
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return 0;
 	}
 }

@@ -38,9 +38,35 @@ public class PostSearchServlet extends HttpServlet {
 		
 		String keyword = request.getParameter("keyword");
 		
+		
+		// 사용자가 이동하는 페이지!
+		int page = 1;
+		String pageParam = request.getParameter("pageParam");
+		
+		if(pageParam != null)
+		{
+			page = Integer.parseInt(pageParam);
+		}
+		
+		// 사용자 원하는 게시글 갯수!
+		int size = 10;
+		String sizeParam = request.getParameter("sizeParam");
+		
+		if(sizeParam != null)
+		{
+			size = Integer.parseInt(sizeParam);
+		}
+		
+		int offset = (page - 1) * size;
+
 		PostService service = new PostService();
 		
-		List<PostDTO> list = service.selectSeachPost(keyword);
+		// 검색된 게시글의 총 갯수
+		int totalCount = service.SearchPostCount(keyword);
+		
+		int totalPage = (int)Math.ceil((double)totalCount/size);
+		
+		List<PostDTO> list = service.selectSeachPost(keyword,offset,size);
 		
 		if(list == null || list.isEmpty())
 		{
@@ -52,6 +78,11 @@ public class PostSearchServlet extends HttpServlet {
 					);
 			return;
 		}
+		
+		request.setAttribute("keyword",keyword);
+		request.setAttribute("size", size);
+		request.setAttribute("currentPage",page);
+		request.setAttribute("totalPage",totalPage);
 		
 		request.setAttribute("posts",list);
 		RequestDispatcher rd = request.getRequestDispatcher("PostSearch.jsp");

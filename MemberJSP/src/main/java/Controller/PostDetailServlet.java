@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
+import DTO.CommentDTO;
 import DTO.PostDTO;
+import Service.CommentService;
 import Service.PostService;
 
 /**
@@ -36,11 +39,15 @@ public class PostDetailServlet extends HttpServlet {
 		System.out.println(id);
 		
 		PostService service = new PostService();
+		CommentService c_service = new CommentService();
+		
+		List<CommentDTO> comments = c_service.selectComments(Integer.parseInt(id));
 		
 		boolean check = service.updatePlusView(Integer.parseInt(id));
 		
 		PostDTO post = service.selectPostDetail(Integer.parseInt(id));
 		
+		request.setAttribute("comments",comments);
 		request.setAttribute("post", post);
 		RequestDispatcher rd = request.getRequestDispatcher("PostDetail.jsp");
 		

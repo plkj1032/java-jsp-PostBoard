@@ -4,6 +4,7 @@ public class CommentDTO {
 	private int id;
 	private int post_id;
 	private int member_id;
+	private String writer;
 	private String content;
 	private String created_at;
 	
@@ -32,6 +33,15 @@ public class CommentDTO {
 	public int getMember_id()
 	{
 		return member_id;
+	}
+	
+	public void setWriter(String writer)
+	{
+		this.writer = writer;
+	}
+	public String getWriter()
+	{
+		return writer;
 	}
 	
 	public void setContent(String content)
