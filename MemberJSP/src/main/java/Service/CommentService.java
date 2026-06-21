@@ -17,4 +17,12 @@ public class CommentService {
 	{
 		return cao.selectComments(post_id);
 	}
+	public boolean deleteComment(int id)
+	{
+		return cao.deleteComment(id);
+	}
+	public boolean updateComment(int id, String content)
+	{
+		return cao.updateComment(id, content);
+	}
 }

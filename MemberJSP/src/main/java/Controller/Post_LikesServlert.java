@@ -10,19 +10,19 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import DTO.MemberDTO;
-import Service.MemberService;
+import Service.Post_likesService;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class Post_LikesServlert
  */
-@WebServlet("/Login")
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "Post_LikesServlet", urlPatterns = { "/Post_Likes" })
+public class Post_LikesServlert extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public Post_LikesServlert() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,10 +32,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		
-		// index.jsp -> Servlet 요청 -> Login.jsp로 보냄 ( 내부적 처리 )
-		request.getRequestDispatcher("Login.jsp").forward(request,response);
+
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -45,38 +42,48 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//사용자에게 값 받기!!!!!!!!!!!!!!!
+		
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+		String post_id = request.getParameter("post_id");
 		
-		if(email == null || email.trim().isEmpty() ||
-			password == null || password.trim().isEmpty())
+		HttpSession session = request.getSession(false);
+		
+		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+		
+		if(loginUser == null)
 		{
-			request.setAttribute("msg","모든 값을 입력하세요!");
-			request.getRequestDispatcher("Login.jsp").forward(request,response);
+			response.getWriter().println(
+					"<script>"
+					+ "alert('로그인 후 이용 가능!');"
+					+ "location.href='Login';"
+					+ "</script>"
+					);
+			return;
 		}
+
+		Post_likesService service = new Post_likesService();
 		
-		MemberService service = new MemberService();
 		
-		MemberDTO loginUser = service.loginUser(email, password);
 		
-		if(loginUser != null)
+		boolean check_like = service.selectCheckLikes(loginUser.getId(), Integer.parseInt(post_id));
+		
+		System.out.print(check_like);
+		
+		if(check_like)
 		{
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", loginUser);
-			
-			request.setAttribute("msg", "로그인성공!");
-			request.getRequestDispatcher("index.jsp").forward(request,response);
+			service.deletePostLikes(loginUser.getId(), Integer.parseInt(post_id));
 		}
 		else
 		{
-			request.setAttribute("msg","로그인실패!");
-			request.getRequestDispatcher("Login.jsp").forward(request, response);
+			service.insertPostLikes(loginUser.getId(), Integer.parseInt(post_id));
 		}
+		
+		response.sendRedirect("PostDetail?id=" + post_id);
+		
+		
 		
 		//doGet(request, response);
 	}

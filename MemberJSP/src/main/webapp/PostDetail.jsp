@@ -7,7 +7,9 @@
     // 세션 및 요청 객체에서 데이터 가져오기
     MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
     PostDTO post = (PostDTO) request.getAttribute("post"); 
-    List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");  
+    List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");
+    String edit_id = request.getParameter("edit_id");
+    Integer likes_count = (Integer) request.getAttribute("likes_count");
 %>
 <!DOCTYPE html>
 <html>
@@ -249,12 +251,20 @@
                 </div>
 
                 <div class="post-content"><%= post.getContent() %></div>
+                <% if(post.getFile_name() != null)
+                	{%>
+                		<img src="uploads/<%= post.getFile_name() %>" width="300">
+                <% }%>
                 
 
                 <div class="button-group">
                     <div class="left-btns">
                         <a href="index.jsp" class="btn btn-home">홈으로</a>
                         <a href="PostList" class="btn btn-list">목록으로</a>
+                        <form action="Post_Likes" method="post">
+                        	<input type="hidden" name="post_id" value="<%=post.getId() %>">
+                        	<button type="submit">좋아요</button>
+                        </form>
                     </div>
                     
                     <div class="right-btns">
@@ -282,6 +292,7 @@
                 				댓글 등록
                 			</button>
                 		<%} %>
+                		<p>좋아요 수 : <%=likes_count %></p>
                 	
                 	</form>
                 </div>
@@ -292,18 +303,55 @@
                			<th>내용</th>
                			<th>작성자</th>
                			<th>작성시간</th>
+               			<th>관리</th>
                		</tr>
                		<% if( comments != null && !comments.isEmpty()) {%>
+               		
                 		<% for( CommentDTO c : comments) {%>
+                		
+                			<%
+                			boolean editMode = edit_id != null && edit_id.equals(String.valueOf(c.getId()));
+                			%>
                 		<tr>
                 			<td><%= c.getMember_id() %></td>
-                			<td><%= c.getContent() %></td>
+                			<td>
+	                			<% if(editMode){ %>
+	                				<form action="CommentUpdate" method="post">
+	                					<input type="hidden" name="c_id" value="<%= c.getId() %>">
+	                					<input type="hidden" name="post_id" value="<%= c.getPost_id() %>">
+	                					<textarea id="content" name="content"><%= c.getContent() %></textarea>
+	                					
+	                					<button type="submit">수정완료</button>
+	                					<a href="PostDetail?id=<%= c.getPost_id() %>">취소</a>
+	                				</form>
+	                			<% } else { %>
+	                			<%= c.getContent() %>
+	                			<%} %>
+                			</td>
                 			<td><%= c.getWriter() %></td>
                 			<td><%= c.getCreated_at() %>
-                			<td></td>
+                			<td>
+                			<% if( loginUser != null && loginUser.getId() == c.getMember_id())
+                				{%>
+                					<% if(!editMode) { %>
+                						<a href="PostDetail?id=<%= c.getPost_id() %>&edit_id=<%= c.getId() %>">
+                							수정
+                						</a>
+                					<% } %>
+                					<form action="CommentDelete" method="post">
+                						<input type="hidden" name="post_id" value="<%= c.getPost_id() %>">
+                						<input type="hidden" name="c_id" value="<%= c.getId() %>">
+                						<button type="submit">삭제</button>
+                					</form>
+                				<%} %>
+                			</td>
                 		</tr>
                 		<%}  
-                		}%>
+                		} else {%>
+                			<tr>
+                				<td colspan="5">아직 댓글이 없습니다.</td>
+                			</tr>
+                		<% } %>
                	</table>
                
 

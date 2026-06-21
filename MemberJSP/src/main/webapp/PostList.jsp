@@ -8,6 +8,14 @@
     Integer currentPage = (Integer) request.getAttribute("currentPage");
     Integer totalPage = (Integer) request.getAttribute("totalPage");
     Integer size = (Integer) request.getAttribute("size");
+    String msg = (String) request.getAttribute("msg");
+    
+    if(msg != null)
+    {%>
+    	<script>
+    		alert('<%=msg%>');
+    	</script>
+   <%}
 %>
 <!DOCTYPE html>
 <html>
@@ -227,8 +235,8 @@
     <header>
         <div class="auth-menu">
             <% if(loginUser == null){ %>
-                <a href="Login.jsp">로그인</a>
-                <a href="Signup.jsp">회원가입</a>
+                <a href="Login">로그인</a>
+                <a href="Signup">회원가입</a>
             <% } else { %>
                 <span class="welcome-text">환영합니다!</span>
                 <a href="Logout">로그아웃</a>
@@ -271,6 +279,7 @@
                                 <td style="text-align: left; padding-left: 15px;">
                                     <a href="PostDetail?id=<%= p.getId() %>" class="post-link">
                                         <%= p.getTitle() %>
+                                        [<%= p.getComment_count() %>]
                                     </a>
                                 </td>
                                 <!--  <td style="text-align: left; color: #6c757d;"><%= p.getContent() %></td> -->

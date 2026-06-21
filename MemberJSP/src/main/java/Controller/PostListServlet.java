@@ -33,7 +33,7 @@ public class PostListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; UTF-8");
+		response.setContentType("text/html; Charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
 		// CurrentPage 최신화!
@@ -41,13 +41,12 @@ public class PostListServlet extends HttpServlet {
 		
 		// 기본적으로 1페이지에서 시작
 		int page = 1;
+		
 		if(pageParam != null)
 		{
 			page = Integer.parseInt(pageParam);
 		}
 		
-		
-	
 		// 기본 게시글 수는 10개
 		int size = 10;
 		
@@ -71,13 +70,8 @@ public class PostListServlet extends HttpServlet {
 		
 		if(posts == null || posts.isEmpty())
 		{
-			response.getWriter().println(
-					"<script>"
-					+ "alert('등록된 게시글이 없습니다!');"
-					+ "location.href='index.jsp';"
-					+ "</script>"
-					);
-			return;
+			request.setAttribute("msg", "등록된 게시글이 없습니다!");
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		
 		int totalCount = service.PostCount();
@@ -103,7 +97,7 @@ public class PostListServlet extends HttpServlet {
 				request.getRequestDispatcher("PostList.jsp");
 		
 		
-		System.out.println("게시글 수 : " + posts.size());
+		//System.out.println("게시글 수 : " + posts.size());
 		
 		rd.forward(request, response);
 		

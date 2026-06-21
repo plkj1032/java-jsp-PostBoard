@@ -120,8 +120,8 @@
     <header>
         <div class="auth-menu">
             <% if(loginUser == null){ %>
-                <a href="Login.jsp">로그인</a>
-                <a href="Signup.jsp">회원가입</a>
+                <a href="Login">로그인</a>
+                <a href="Signup">회원가입</a>
             <% } else { %>
                 <span class="welcome-text">환영합니다!</span>
                 <a href="Logout">로그아웃</a>

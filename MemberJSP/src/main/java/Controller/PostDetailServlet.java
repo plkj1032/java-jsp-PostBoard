@@ -13,6 +13,7 @@ import DTO.CommentDTO;
 import DTO.PostDTO;
 import Service.CommentService;
 import Service.PostService;
+import Service.Post_likesService;
 
 /**
  * Servlet implementation class PostDetailServlet
@@ -47,6 +48,11 @@ public class PostDetailServlet extends HttpServlet {
 		
 		PostDTO post = service.selectPostDetail(Integer.parseInt(id));
 		
+		// 좋아요 갯수 추가!
+		Post_likesService p_service = new Post_likesService();
+		int likes_count = p_service.selectPostLikesCount(Integer.parseInt(id));
+		
+		request.setAttribute("likes_count", likes_count);
 		request.setAttribute("comments",comments);
 		request.setAttribute("post", post);
 		RequestDispatcher rd = request.getRequestDispatcher("PostDetail.jsp");

@@ -13,7 +13,7 @@ public class PostDAO {
 	public boolean insertPost(PostDTO pto)
 	{
 		String sql = "INSERT INTO "
-				+ "posts(member_id,title,content) VALUES (?,?,?)";
+				+ "posts(member_id,title,content,file_name) VALUES (?,?,?,?)";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -24,6 +24,7 @@ public class PostDAO {
 			ps.setInt(1, pto.getMember_id());
 			ps.setString(2, pto.getTitle());
 			ps.setString(3, pto.getContent());
+			ps.setString(4, pto.getFile_name());
 			
 			int result = ps.executeUpdate();
 			
@@ -43,11 +44,14 @@ public class PostDAO {
 	public List<PostDTO> selectShowPosts(int offset, int size)
 	{
 		String sql = "SELECT p.id, p.title, m.name AS post_write, "
-				+ "p.created_at,p.view_count "
+				+ "COUNT(c.id) AS comment_count, p.created_at,p.view_count "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
+				+ "LEFT JOIN comments c ON c.post_id = p.id "
+				+ "GROUP BY p.id "
 				+ "ORDER BY p.id "
 				+ "LIMIT ?,?";
+		
 		List<PostDTO> list = new ArrayList<>();
 		
 		try(
@@ -69,6 +73,7 @@ public class PostDAO {
 				//pto.setContent(rs.getString("content"));
 				pto.setPost_writer(rs.getString("post_write"));
 				pto.setCreated_at(rs.getString("created_at"));
+				pto.setComment_count(rs.getInt("comment_count"));
 				pto.setView_count(rs.getInt("view_count"));
 				
 				list.add(pto);
@@ -87,7 +92,8 @@ public class PostDAO {
 	{
 		PostDTO pto = null;
 		
-		String sql = "SELECT p.id, p.member_id, p.title, p.content, m.name AS post_writer, p.created_at "
+		String sql = "SELECT p.id, p.member_id, p.title, p.content,p.file_name, "
+				+ "m.name AS post_writer, p.created_at "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
 				+ "WHERE p.id = ?";
@@ -112,6 +118,7 @@ public class PostDAO {
 				pto.setMember_id(rs.getInt("member_id"));
 				pto.setTitle(rs.getString("title"));
 				pto.setContent(rs.getString("content"));
+				pto.setFile_name(rs.getString("file_name"));
 				pto.setPost_writer(rs.getString("post_writer"));
 				pto.setCreated_at(rs.getString("created_at"));
 				

@@ -53,7 +53,7 @@ public class PostUdateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; UTF-8");
+		response.setContentType("text/html; Charset=UTF-8");
 		
 		String id = request.getParameter("id");
 		String title = request.getParameter("title");

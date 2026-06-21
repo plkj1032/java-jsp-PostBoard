@@ -30,7 +30,9 @@ public class Signup extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//request.getRequestDispatcher("Signup.jsp").forward(request, response);
+		request.getRequestDispatcher("Signup.jsp").forward(request, response);
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -53,14 +55,8 @@ public class Signup extends HttpServlet {
 			email == null || email.trim().isEmpty() ||
 			password == null || password.trim().isEmpty())
 		{
-			// 값 입력이 없으면 알려주기!!!!!!!!!
-			response.getWriter().println(
-					"<script>"
-					+ "alert('모든 값을 입력하세요!');"
-					+ "location.href='index.jsp';"
-					+ "</script>"
-					);
-			return;
+			request.setAttribute("msg","모든 값 입력!!");
+			request.getRequestDispatcher("Signup.jsp").forward(request, response);
 		}
 		
 		int i_age = Integer.parseInt(age);
@@ -78,21 +74,13 @@ public class Signup extends HttpServlet {
 		
 		if(check)
 		{
-			response.getWriter().println(
-					"<script>"
-					+ "alert('회원가입 성공!');"
-					+ "location.href='index.jsp';"
-					+ "</script>"
-					);
+			request.setAttribute("msg","회원가입 성공!");
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		else
 		{
-			response.getWriter().println(
-					"<script>"
-					+ "alert('로그인 실패!');"
-					+ "location.href='index.jsp';"
-					+ "</script>"
-					);
+			request.setAttribute("msg", "회원가입 실패!");
+			request.getRequestDispatcher("Signup.jsp").forward(request, response);
 		}
 		
 		//doGet(request, response);

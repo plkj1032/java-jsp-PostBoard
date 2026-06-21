@@ -38,7 +38,7 @@ public class CommentDAO {
 	}
 	public List<CommentDTO> selectComments(int post_id)
 	{
-		String sql = "SELECT c.post_id, c.member_id, c.content, c.created_at, m.name AS writer "
+		String sql = "SELECT c.id,c.post_id, c.member_id, c.content, c.created_at, m.name AS writer "
 				+ "FROM comments c "
 				+ "JOIN members m ON m.id = c.member_id "
 				+ "WHERE c.post_id = ? "
@@ -59,6 +59,7 @@ public class CommentDAO {
 			{
 				CommentDTO cto = new CommentDTO();
 				
+				cto.setId(rs.getInt("id"));
 				cto.setPost_id(rs.getInt("post_id"));
 				cto.setMember_id(rs.getInt("member_id"));
 				cto.setContent(rs.getString("content"));
@@ -75,5 +76,56 @@ public class CommentDAO {
 		}
 		
 		return null;
+	}
+	public boolean updateComment(int id, String content)
+	{
+		String sql = "UPDATE comments SET content = ? WHERE id = ?";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				){
+			ps.setString(1, content);
+			ps.setInt(2, id);
+			
+			int result = ps.executeUpdate();
+			
+			if(result > 0)
+			{
+				return true;
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean deleteComment(int id)
+	{
+		String sql = "DELETE FROM comments WHERE id = ?";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				){
+			ps.setInt(1,id);
+			
+			int result = ps.executeUpdate();
+			
+			if(result > 0)
+			{
+				return true;
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 }

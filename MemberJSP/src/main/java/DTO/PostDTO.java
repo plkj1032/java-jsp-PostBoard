@@ -6,8 +6,10 @@ public class PostDTO {
 	private String title;
 	private String content;
 	private String post_writer;
+	private int comment_count;
 	private int view_count;
-	private  String created_at;
+	private String created_at;
+	private String file_name;
 	
 	public void setId(int id)
 	{
@@ -54,6 +56,15 @@ public class PostDTO {
 		return post_writer;
 	}
 	
+	public void setComment_count(int comment_count)
+	{
+		this.comment_count = comment_count;
+	}
+	public int getComment_count()
+	{
+		return comment_count;
+	}
+	
 	public void setView_count(int view_count)
 	{
 		this.view_count = view_count;
@@ -70,5 +81,14 @@ public class PostDTO {
 	public String getCreated_at()
 	{
 		return created_at;
+	}
+	
+	public void setFile_name(String file_name)
+	{
+		this.file_name = file_name;
+	}
+	public String getFile_name()
+	{
+		return file_name;
 	}
 }

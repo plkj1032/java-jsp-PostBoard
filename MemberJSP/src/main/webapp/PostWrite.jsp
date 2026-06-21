@@ -9,7 +9,7 @@
 %>
         <script>
             alert('로그인이 필요합니다!');
-            location.href='index.jsp';
+            location.href='Login';
         </script>
 <%
         return; 
@@ -228,7 +228,7 @@
             <div class="write-box">
                 <h1>📝 게시글 작성</h1>
                 
-                <form action="PostWrite" method="post">
+                <form action="PostWrite" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="title">게시글 제목</label>
                         <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력해주세요" required>
@@ -238,6 +238,10 @@
                         <label for="content">게시글 내용</label>
                         <textarea id="content" name="content" class="form-control" placeholder="내용을 작성해주세요" required></textarea>
                     </div>
+                    
+                    <!-- 파일 등록 -->>
+                    파일 :
+                    <input type="file" name="file"><br>
 
                     <div class="button-group">
                         <a href="index.jsp" class="btn btn-home">홈으로</a>
