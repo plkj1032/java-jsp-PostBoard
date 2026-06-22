@@ -29,6 +29,7 @@ public class CommentDeleteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doHandle(request,response);
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -38,27 +39,53 @@ public class CommentDeleteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+//		request.setCharacterEncoding("UTF-8");
+//		response.setCharacterEncoding("UTF-8");
+//		response.setContentType("text/html; UTF-8");
+//		
+//		
+//		String id = request.getParameter("c_id");
+//		String post_id = request.getParameter("post_id");
+//		System.out.println("p_id : " + post_id);
+//		int p_id = Integer.parseInt(post_id);
+//		System.out.println("p_id 2: " + post_id);
+//		System.out.println("id : " + id);
+//		
+//		CommentService service = new CommentService();
+//		
+//		boolean check = service.deleteComment(Integer.parseInt(id));
+//		
+//		if(check)
+//		{
+//			response.sendRedirect("PostDetail?id=" + p_id);
+//		}
+		doHandle(request,response);
+		//doGet(request, response);
+	}
+	
+	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 		
+		String method = request.getMethod();
 		
-		String id = request.getParameter("c_id");
-		String post_id = request.getParameter("post_id");
-		System.out.println("p_id : " + post_id);
-		int p_id = Integer.parseInt(post_id);
-		System.out.println("p_id 2: " + post_id);
-		System.out.println("id : " + id);
-		
-		CommentService service = new CommentService();
-		
-		boolean check = service.deleteComment(Integer.parseInt(id));
-		
-		if(check)
+		if(method == "POST")
 		{
-			response.sendRedirect("PostDetail?id=" + p_id);
+			String c_id = request.getParameter("c_id");
+			String post_id = request.getParameter("post_id");
+			
+			int p_id = Integer.parseInt(post_id);
+			
+			CommentService service = new CommentService();
+			
+			boolean check = service.deleteComment(Integer.parseInt(c_id));
+			
+			if(check)
+			{
+				response.sendRedirect("PostDetail?id=" + p_id);
+			}
 		}
-		//doGet(request, response);
 	}
 
 }

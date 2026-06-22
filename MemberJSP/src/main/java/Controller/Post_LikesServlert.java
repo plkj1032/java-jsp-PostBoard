@@ -32,7 +32,7 @@ public class Post_LikesServlert extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		doHandle(request,response);
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -43,49 +43,94 @@ public class Post_LikesServlert extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=utf-8");
+		doHandle(request,response);
 		
-		String post_id = request.getParameter("post_id");
-		
-		HttpSession session = request.getSession(false);
-		
-		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
-		
-		if(loginUser == null)
-		{
-			response.getWriter().println(
-					"<script>"
-					+ "alert('로그인 후 이용 가능!');"
-					+ "location.href='Login';"
-					+ "</script>"
-					);
-			return;
-		}
-
-		Post_likesService service = new Post_likesService();
-		
-		
-		
-		boolean check_like = service.selectCheckLikes(loginUser.getId(), Integer.parseInt(post_id));
-		
-		System.out.print(check_like);
-		
-		if(check_like)
-		{
-			service.deletePostLikes(loginUser.getId(), Integer.parseInt(post_id));
-		}
-		else
-		{
-			service.insertPostLikes(loginUser.getId(), Integer.parseInt(post_id));
-		}
-		
-		response.sendRedirect("PostDetail?id=" + post_id);
+//		request.setCharacterEncoding("UTF-8");
+//		response.setCharacterEncoding("UTF-8");
+//		response.setContentType("text/html; charset=utf-8");
+//		
+//		String post_id = request.getParameter("post_id");
+//		
+//		HttpSession session = request.getSession(false);
+//		
+//		MemberDTO loginUser = (MemberDTO)session.getAttribute("loginUser");
+//		
+//		if(loginUser == null)
+//		{
+//			response.getWriter().println(
+//					"<script>"
+//					+ "alert('로그인 후 이용 가능!');"
+//					+ "location.href='Login';"
+//					+ "</script>"
+//					);
+//			return;
+//		}
+//
+//		Post_likesService service = new Post_likesService();
+//		
+//		
+//		
+//		boolean check_like = service.selectCheckLikes(loginUser.getId(), Integer.parseInt(post_id));
+//		
+//		System.out.print(check_like);
+//		
+//		if(check_like)
+//		{
+//			service.deletePostLikes(loginUser.getId(), Integer.parseInt(post_id));
+//		}
+//		else
+//		{
+//			service.insertPostLikes(loginUser.getId(), Integer.parseInt(post_id));
+//		}
+//		
+//		response.sendRedirect("PostDetail?id=" + post_id);
 		
 		
 		
 		//doGet(request, response);
+	}
+	
+	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		String method = request.getMethod();
+		
+		if(method.equals("POST"))
+		{
+			String post_id = request.getParameter("post_id");
+			
+			HttpSession session = request.getSession();
+			
+			MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+			
+			if(loginUser == null)
+			{
+				response.getWriter().println(
+						"<script>"
+						+ "alert('로그인 후 이용 가능!');"
+						+ "location.href='Login';"
+						+ "</script>"
+						);
+				return;
+			}
+			
+			Post_likesService service = new Post_likesService();
+			
+			boolean check = service.selectCheckLikes(loginUser.getId(), Integer.parseInt(post_id));
+			
+			if(check)
+			{
+				service.deletePostLikes(loginUser.getId(), Integer.parseInt(post_id));
+			}
+			else
+			{
+				service.insertPostLikes(loginUser.getId(), Integer.parseInt(post_id));
+			}
+			
+			response.sendRedirect("PostDetail?id=" + Integer.parseInt(post_id));
+		}
 	}
 
 }

@@ -30,6 +30,7 @@ public class CommentUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		doHandle(request,response);
 	}
 
 	/**
@@ -37,24 +38,51 @@ public class CommentUpdateServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; UTF-8");
-		
-		String current_id = request.getParameter("c_id");
-		String content = request.getParameter("content");
-		String post_id = request.getParameter("post_id");
-		
-		CommentService service = new CommentService();
-		
-		boolean check = service.updateComment(Integer.parseInt(current_id), content);
-		
-		if(check)
-		{
-			response.sendRedirect("PostDetail?id=" + Integer.parseInt(post_id));
-		}
+		doHandle(request,response);
+//		request.setCharacterEncoding("UTF-8");
+//		response.setCharacterEncoding("UTF-8");
+//		response.setContentType("text/html; UTF-8");
+//		
+//		String current_id = request.getParameter("c_id");
+//		String content = request.getParameter("content");
+//		String post_id = request.getParameter("post_id");
+//		
+//		CommentService service = new CommentService();
+//		
+//		boolean check = service.updateComment(Integer.parseInt(current_id), content);
+//		
+//		if(check)
+//		{
+//			response.sendRedirect("PostDetail?id=" + Integer.parseInt(post_id));
+//		}
 		
 		//doGet(request, response);
+	}
+	
+	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		String method = request.getMethod();
+		
+		if(method == "POST")
+		{
+			String current_id = request.getParameter("c_id");
+			String content = request.getParameter("content");
+			String post_id = request.getParameter("post_id");
+			
+			CommentService service = new CommentService();
+			
+			boolean check = service.updateComment(Integer.parseInt(current_id), content);
+			
+			if(check)
+			{
+				response.sendRedirect("PostDetail?id=" + Integer.parseInt(post_id));
+			}
+			
+			
+		}
 	}
 
 }

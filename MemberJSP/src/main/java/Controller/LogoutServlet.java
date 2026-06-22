@@ -29,14 +29,15 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
-		
-		if(session != null)
-		{
-			session.invalidate();
-		}
-		
-		response.sendRedirect("index.jsp");
+		doHandle(request,response);
+//		HttpSession session = request.getSession(false);
+//		
+//		if(session != null)
+//		{
+//			session.invalidate();
+//		}
+//		
+//		response.sendRedirect("index.jsp");
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -45,7 +46,28 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doHandle(request,response);
 		//doGet(request, response);
+	}
+	
+	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		String method = request.getMethod();
+		
+		if(method == "POST")
+		{
+			HttpSession session = request.getSession(false);
+			
+			if(session != null)
+			{
+				session.invalidate();
+			}
+			
+			response.sendRedirect("index.jsp");
+		}
 	}
 
 }
