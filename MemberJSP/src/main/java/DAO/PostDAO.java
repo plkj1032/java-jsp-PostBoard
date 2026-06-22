@@ -159,7 +159,7 @@ public class PostDAO {
 	
 	public boolean updatePost(String title, String content, int post_id)
 	{
-		String sql = "UPDATE posts SET title = ? WHERE id = ?";
+		String sql = "UPDATE posts SET title = ?, content = ? WHERE id = ?";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -167,7 +167,8 @@ public class PostDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 				){
 			ps.setString(1, title);
-			ps.setInt(2, post_id);
+			ps.setString(2, content);
+			ps.setInt(3, post_id);
 			
 			int result = ps.executeUpdate();
 			
@@ -209,24 +210,50 @@ public class PostDAO {
 		}
 		return false;
 	}
-	public List<PostDTO> selectSearchPost(String keyword, int offset, int size)
-	{
+	public List<PostDTO> selectSearchPost(String keyword, String searchType, int offset, int size)
+	{	
 		String sql = "SELECT p.id, p.title, p.content, m.name AS post_writer, "
 				+ "p.created_at, p.view_count "
 				+ "FROM posts p "
-				+ "JOIN members m ON p.member_id = m.id "
-				+ "WHERE p.title LIKE ? "
-				+ "ORDER BY p.id ASC "
-				+ "LIMIT ?,?";
+				+ "JOIN members m ON p.member_id = m.id ";
+				
+				switch(searchType)
+				{
+					case "title":
+						sql += "WHERE p.title LIKE ? ";
+						break;
+					case "content":
+						sql += "WHERE p.content LIKE ? ";
+						break;
+					case "writer":
+						sql += "WHERE m.name LIKE ? ";
+						break;
+					case "title_content":
+						sql += "WHERE p.title LIKE ? OR p.content LIKE ? ";
+						break;
+				}
+
+				sql += "ORDER BY p.id ASC ";
+				sql += "LIMIT ?,?";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
 				
 			PreparedStatement ps = conn.prepareStatement(sql);
 				){
-			ps.setString(1, "%" + keyword + "%");
-			ps.setInt(2, offset);
-			ps.setInt(3, size);
+			if(searchType.equals("title_content"))
+			{
+				ps.setString(1, "%" + keyword + "%");
+				ps.setString(2, "%" + keyword + "%");
+				ps.setInt(3, offset);
+				ps.setInt(4, size);
+			}
+			else
+			{
+				ps.setString(1, "%" + keyword + "%");
+				ps.setInt(2, offset);
+				ps.setInt(3, size);
+			}
 			
 			ResultSet rs = ps.executeQuery();
 			

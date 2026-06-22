@@ -323,15 +323,22 @@
 						<option value="20">20개씩 보기</option>
 						<option value="50">50개씩 보기</option>
 					</select>
-					
+
 					<input type="hidden" name="pageParam" value="1">
 					<button type="submit">적용</button>
 				</form>
+				
                 </div>
 
                 <div class="board-footer">
                     <form action="PostSearch" method="get" class="search-form">
                         <input type="text" name="keyword" class="search-input" placeholder="검색어를 입력하세요">
+                        <select name="searchType">
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="writer">작성자</option>
+						<option value="title_content">제목+내용</option>
+					</select>
                         <button type="submit" class="btn-search">검색</button>
                     </form>
                     

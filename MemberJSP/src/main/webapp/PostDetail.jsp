@@ -270,7 +270,7 @@
                     <div class="right-btns">
                         <% 
                             // 현재 로그인한 사용자와 게시글 작성자가 일치할 때만 수정/삭제 버튼 노출
-                            if( loginUser != null && loginUser.getId() == post.getMember_id()) { 
+                            if( ((loginUser != null && loginUser.getId() == post.getMember_id())) && loginUser.getRole().equals("ADMIN")) {
                         %>
                             <a href="PostUpdate?id=<%= post.getId() %>" class="btn btn-edit">게시글 수정</a>
                             <a href="PostDelete?id=<%= post.getId() %>" class="btn btn-delete">게시글 삭제</a>
@@ -331,7 +331,7 @@
                 			<td><%= c.getWriter() %></td>
                 			<td><%= c.getCreated_at() %>
                 			<td>
-                			<% if( loginUser != null && loginUser.getId() == c.getMember_id())
+                			<% if( (loginUser != null && loginUser.getId() == c.getMember_id()) && loginUser.getRole().equals("ADMIN"))
                 				{%>
                 					<% if(!editMode) { %>
                 						<a href="PostDetail?id=<%= c.getPost_id() %>&edit_id=<%= c.getId() %>">

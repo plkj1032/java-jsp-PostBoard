@@ -117,6 +117,11 @@ public class PostSearchServlet extends HttpServlet {
 			String pageParam = request.getParameter("pageParam");
 			String sizeParam = request.getParameter("sizeParam");
 			
+			// 검색 기능 강화!
+			String searchType = request.getParameter("searchType");
+			
+			System.out.println(searchType);
+			
 			int page = 1;
 			
 			if(pageParam != null)
@@ -138,12 +143,27 @@ public class PostSearchServlet extends HttpServlet {
 			int totalCount = service.SearchPostCount(keyword);
 			int totalPage = (int)Math.ceil((double)totalCount / size);
 			
-			List<PostDTO> list = service.selectSeachPost(keyword, offset, size);
+			List<PostDTO> list = service.selectSeachPost(keyword, searchType, offset, size);
 			
 			if(list == null || list.isEmpty())
 			{
-				response.sendRedirect("index.jsp");
+				response.getWriter().println(
+						"<script>"
+						+ "alert('등록된 게시글 없음!');"
+						+ "location.href='index.jsp';"
+						+ "</script>"
+						);
+				return;
 			}
+			
+			request.setAttribute("keyword", keyword);
+			request.setAttribute("size", size);
+			request.setAttribute("currentPage", page);
+			request.setAttribute("totalPage",totalPage);
+			
+			request.setAttribute("posts",list);
+			RequestDispatcher rd = request.getRequestDispatcher("PostSearch.jsp");
+			rd.forward(request, response);
 			
 		}
 	}

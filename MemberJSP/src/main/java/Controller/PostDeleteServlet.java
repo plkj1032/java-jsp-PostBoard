@@ -78,7 +78,7 @@ public class PostDeleteServlet extends HttpServlet {
 		
 		if(method == "GET")
 		{
-			String post_id = request.getParameter("post_id");
+			String id = request.getParameter("id");
 			
 			HttpSession session = request.getSession();
 			
@@ -97,7 +97,7 @@ public class PostDeleteServlet extends HttpServlet {
 			
 			PostService service = new PostService();
 			
-			boolean check = service.deletePost(Integer.parseInt(post_id));
+			boolean check = service.deletePost(Integer.parseInt(id));
 			
 			if(check)
 			{

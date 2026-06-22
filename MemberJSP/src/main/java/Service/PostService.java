@@ -37,9 +37,9 @@ public class PostService {
 	{
 		return pao.UpdatePlusView(id);
 	}
-	public List<PostDTO> selectSeachPost(String keyword, int offset, int size)
+	public List<PostDTO> selectSeachPost(String keyword, String searchType, int offset, int size)
 	{
-		return pao.selectSearchPost(keyword,offset,size);
+		return pao.selectSearchPost(keyword,searchType,offset,size);
 	}
 	public int PostCount()
 	{

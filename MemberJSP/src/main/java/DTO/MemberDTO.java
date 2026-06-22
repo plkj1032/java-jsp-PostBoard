@@ -6,6 +6,7 @@ public class MemberDTO {
 	private int age;
 	private String email;
 	private String password;
+	private String role;
 	
 	public MemberDTO() {};
 	
@@ -52,5 +53,13 @@ public class MemberDTO {
 	public String getPassword()
 	{
 		return password;
+	}
+	public void setRole(String role)
+	{
+		this.role = role;
+	}
+	public String getRole()
+	{
+		return role;
 	}
 }

@@ -291,10 +291,20 @@
 						<option value="50">50개씩 보기</option>
 					</select>
 					
+					<select name="searchType">
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="writer">작성자</option>
+						<option value="title_content">제목+내용</option>
+					</select>
+
 					<input type="hidden" name="keyword" value="<%=keyword %>">
 					<input type="hidden" name="pageParam" value="1">
 					<button type="submit">적용</button>
 				</form>
+
+					
+
                 </div>
 
                 <div class="board-footer">

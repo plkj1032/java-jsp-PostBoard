@@ -85,11 +85,12 @@ public class MemberDAO {
 			if(rs.next())
 			{
 				loginUser = new MemberDTO();
-				
+			
 				loginUser.setId(rs.getInt("id"));
 				loginUser.setName(rs.getString("name"));
 				loginUser.setAge(rs.getInt("age"));
 				loginUser.setEmail(rs.getString("email"));
+				loginUser.setRole(rs.getString("role"));
 				
 				return loginUser;
 			}
