@@ -7,6 +7,8 @@ public class MemberDTO {
 	private String email;
 	private String password;
 	private String role;
+	private String snsId;
+	private String snsType;
 	
 	public MemberDTO() {};
 	
@@ -62,4 +64,20 @@ public class MemberDTO {
 	{
 		return role;
 	}
+	
+	public String getSnsId() {
+        return snsId;
+    }
+
+    public void setSnsId(String snsId) {
+        this.snsId = snsId;
+    }
+
+    public String getSnsType() {
+        return snsType;
+    }
+
+    public void setSnsType(String snsType) {
+        this.snsType = snsType;
+    }
 }

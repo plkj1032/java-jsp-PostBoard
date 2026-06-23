@@ -33,78 +33,78 @@ public class PostListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		doHandle(request,response);
+		//doHandle(request,response);
 		
-//		request.setCharacterEncoding("UTF-8");
-//		response.setContentType("text/html; Charset=UTF-8");
-//		response.setCharacterEncoding("UTF-8");
-//		
-//		// CurrentPage 최신화!
-//		String pageParam = request.getParameter("pageParam");
-//		
-//		// 기본적으로 1페이지에서 시작
-//		int page = 1;
-//		
-//		if(pageParam != null)
-//		{
-//			page = Integer.parseInt(pageParam);
-//		}
-//		
-//		// 기본 게시글 수는 10개
-//		int size = 10;
-//		
-//		String sizeParam = request.getParameter("sizeParam");
-//		
-//		if(sizeParam != null)
-//		{
-//			size = Integer.parseInt(sizeParam);
-//		}
-//		
-//		if(size != 5 && size != 10 && size != 20 && size != 50)
-//		{
-//			size = 10;
-//		}
-//		
-//		int offset = (page - 1) * size;
-//		
-//		PostService service = new PostService();
-//		
-//		List<PostDTO> posts = service.selectShowPost(offset, size);
-//		
-//		if(posts == null || posts.isEmpty())
-//		{
-//			request.setAttribute("msg", "등록된 게시글이 없습니다!");
-//			request.getRequestDispatcher("index.jsp").forward(request, response);
-//		}
-//		
-//		int totalCount = service.PostCount();
-//		int totalPage = (int)Math.ceil((double)totalCount/size);
-//		
-//		request.setAttribute("size",size);
-//		request.setAttribute("currentPage",page);
-//		request.setAttribute("totalPage",totalPage);
-//		
-//		// 값 디버깅용
-//		for( PostDTO pto : posts)
-//		{
-//			System.out.printf("ID : \n",pto.getId());
-//			System.out.printf("Title : \n",pto.getTitle());
-//			System.out.printf("Content : \n",pto.getContent());
-//			System.out.printf("Post_writer : \n",pto.getPost_writer());
-//			System.out.printf("Created_at : \n",pto.getCreated_at());
-//		}
-//		
-//		request.setAttribute("posts",posts);
-//		
-//		RequestDispatcher rd =
-//				request.getRequestDispatcher("PostList.jsp");
-//		
-//		
-//		//System.out.println("게시글 수 : " + posts.size());
-//		
-//		rd.forward(request, response);
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; Charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		// CurrentPage 최신화!
+		String pageParam = request.getParameter("pageParam");
+		
+		// 기본적으로 1페이지에서 시작
+		int page = 1;
+		
+		if(pageParam != null)
+		{
+			page = Integer.parseInt(pageParam);
+		}
+		
+		// 기본 게시글 수는 10개
+		int size = 10;
+		
+		String sizeParam = request.getParameter("sizeParam");
+		
+		if(sizeParam != null)
+		{
+			size = Integer.parseInt(sizeParam);
+		}
+		
+		if(size != 5 && size != 10 && size != 20 && size != 50)
+		{
+			size = 10;
+		}
+		
+		int offset = (page - 1) * size;
+		
+		PostService service = new PostService();
+		
+		List<PostDTO> posts = service.selectShowPost(offset, size);
+		
+		if(posts == null || posts.isEmpty())
+		{
+			request.setAttribute("msg", "등록된 게시글이 없습니다!");
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+		
+		int totalCount = service.PostCount();
+		int totalPage = (int)Math.ceil((double)totalCount/size);
+		
+		request.setAttribute("size",size);
+		request.setAttribute("currentPage",page);
+		request.setAttribute("totalPage",totalPage);
+		
+		// 값 디버깅용
+		for( PostDTO pto : posts)
+		{
+			System.out.printf("ID : \n",pto.getId());
+			System.out.printf("Title : \n",pto.getTitle());
+			System.out.printf("Content : \n",pto.getContent());
+			System.out.printf("Post_writer : \n",pto.getPost_writer());
+			System.out.printf("Created_at : \n",pto.getCreated_at());
+		}
+		
+		request.setAttribute("posts",posts);
+		
+		RequestDispatcher rd =
+				request.getRequestDispatcher("PostList.jsp");
+		
+		
+		//System.out.println("게시글 수 : " + posts.size());
+		
+		rd.forward(request, response);
+		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

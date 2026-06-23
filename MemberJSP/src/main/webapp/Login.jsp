@@ -161,7 +161,7 @@
         display: flex;
         flex-direction: column; /* 버튼들을 세로로 배치 */
         gap: 10px;
-        margin-top: 30px;
+        margin-top: 25px;
     }
     .btn {
         width: 100%;
@@ -192,9 +192,42 @@
         background-color: #dee2e6;
     }
 
+    /* 🔥 [추가] 구분선 및 카카오 로그인 버튼 스타일링 */
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #adb5bd;
+        font-size: 13px;
+        margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .divider:not(:empty)::before { margin-right: .5em; }
+    .divider:not(:empty)::after { margin-left: .5em; }
+
+    .btn-kakao {
+        background-color: #FEE500;
+        color: #191919;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .btn-kakao:hover {
+        background-color: #FADA0A;
+    }
+    .btn-kakao img {
+        width: 18px;
+        height: 18px;
+    }
+
     /* 하단 가이드 텍스트 */
     .login-footer {
-        margin-top: 20px;
+        margin-top: 25px;
         text-align: center;
         font-size: 14px;
         color: #6c757d;
@@ -241,9 +274,17 @@
 
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary">로그인</button>
-                        <a href="index.jsp" class="btn btn-home">홈으로</a>
                     </div>
                 </form>
+
+                <div class="divider">또는</div>
+                
+                <div class="button-group" style="margin-top: 0;">
+                    <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=02c9a21784832eda4f5fc3bf4fcda038&redirect_uri=http://localhost:8080/MemberJSP/callback/kakao" class="btn btn-kakao">
+                        💬 카카오 로그인
+                    </a>
+                    <a href="index.jsp" class="btn btn-home">홈으로</a>
+                </div>
 
                 <div class="login-footer">
                     아직 회원이 아니신가요?<a href="Signup.jsp">회원가입하기</a>
