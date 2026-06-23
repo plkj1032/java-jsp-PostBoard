@@ -57,7 +57,7 @@ public class LogoutServlet extends HttpServlet {
 		
 		String method = request.getMethod();
 		
-		if(method == "POST")
+		if(method == "GET")
 		{
 			HttpSession session = request.getSession(false);
 			

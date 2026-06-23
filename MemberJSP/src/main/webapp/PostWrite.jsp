@@ -239,9 +239,19 @@
                         <textarea id="content" name="content" class="form-control" placeholder="내용을 작성해주세요" required></textarea>
                     </div>
                     
-                    <!-- 파일 등록 -->>
+                    <!-- 파일 등록 -->
                     파일 :
                     <input type="file" name="file"><br>
+                    
+                    <!-- 공지글 등록 -->
+                    <% if("ADMIN".equals(loginUser.getRole())){ %>
+                    <div class="form-group">
+                    	<label>
+                    		<input type="checkbox" name="is_notice" value="1">
+                    		공지글로 등록
+                    	</label>
+                   	</div>
+                    <%} %>
 
                     <div class="button-group">
                         <a href="index.jsp" class="btn btn-home">홈으로</a>

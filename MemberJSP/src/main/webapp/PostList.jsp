@@ -15,7 +15,7 @@
     	<script>
     		alert('<%=msg%>');
     	</script>
-   <%}
+   <%} 
 %>
 <!DOCTYPE html>
 <html>

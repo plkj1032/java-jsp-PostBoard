@@ -13,7 +13,7 @@ public class PostDAO {
 	public boolean insertPost(PostDTO pto)
 	{
 		String sql = "INSERT INTO "
-				+ "posts(member_id,title,content,file_name) VALUES (?,?,?,?)";
+				+ "posts(member_id,title,content,file_name,is_notice,created_at) VALUES (?,?,?,?,?,NOW())";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -25,6 +25,7 @@ public class PostDAO {
 			ps.setString(2, pto.getTitle());
 			ps.setString(3, pto.getContent());
 			ps.setString(4, pto.getFile_name());
+			ps.setInt(5, pto.getIs_notice());
 			
 			int result = ps.executeUpdate();
 			
@@ -49,7 +50,7 @@ public class PostDAO {
 				+ "JOIN members m ON p.member_id = m.id "
 				+ "LEFT JOIN comments c ON c.post_id = p.id "
 				+ "GROUP BY p.id "
-				+ "ORDER BY p.id "
+				+ "ORDER BY p.is_notice DESC, p.id ASC "
 				+ "LIMIT ?,?";
 		
 		List<PostDTO> list = new ArrayList<>();

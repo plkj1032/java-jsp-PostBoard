@@ -11,6 +11,7 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import DTO.MemberDTO;
 import DTO.PostDTO;
@@ -180,20 +181,54 @@ public class PostWriteServlet extends HttpServlet {
 		}
 		else if(method.equals("POST"))
 		{
+			// 파일 업로드 시작
+			
 			Part filePart = request.getPart("file");
 			String fileName = null;
 			
 			if(filePart != null && filePart.getSize() > 0)
 			{
-				fileName = filePart.getSubmittedFileName();
+				String uuid = UUID.randomUUID().toString();
+				
+				fileName = uuid + "_" + filePart.getSubmittedFileName();
+				
+				String lower = fileName.toLowerCase();
+				
+				if(!(lower.endsWith(".jpg")
+					|| lower.endsWith(".jpeg")
+					|| lower.endsWith(".png")
+					|| lower.endsWith(".gif")))
+				{
+					response.getWriter().println(
+							"<script>"
+							+ "alert('이미지만 업로드 가능합니다!');"
+							+ "history.back();"
+							+ "</script>"
+							);
+					return;
+				}
+				
+				if(filePart.getSize() > 5 * 1024 * 1024)
+				{
+					response.getWriter().println(
+							"<script>"
+							+ "alert('용량 초과!');"
+							+ "history.back();"
+							+ "</script>"
+							);
+					return;
+				}
 				
 				//String uploadPath = getServletContext().getRealPath("/uploads");
 				String uploadPath = "D:/uploads";
-				
+			
 				File uploadDir = new File(uploadPath);
-				if(!uploadDir.exists()) {
-					uploadDir.mkdir();
-				}
+				
+				// 하위 디렉토리 생성 방지
+				uploadDir.mkdir();
+//				if(!uploadDir.exists()) {
+//					uploadDir.mkdir();
+//				}
 				
 				filePart.write(uploadPath + File.separator + fileName);
 			}
@@ -232,10 +267,19 @@ public class PostWriteServlet extends HttpServlet {
 			
 			PostDTO pto = new PostDTO();
 			
+			int is_notice = 0;
+			
+			if("ADMIN".equals(loginUser.getRole())
+					&& request.getParameter("is_notice") != null)
+			{
+				is_notice = 1;
+			}
+			
 			pto.setMember_id(loginUser.getId());
 			pto.setTitle(title);
 			pto.setContent(content);
 			pto.setFile_name(fileName);
+			pto.setId(is_notice);
 			
 			PostService service = new PostService();
 			

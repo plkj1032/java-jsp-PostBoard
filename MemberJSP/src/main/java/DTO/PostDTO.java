@@ -10,6 +10,7 @@ public class PostDTO {
 	private int view_count;
 	private String created_at;
 	private String file_name;
+	private int is_notice;
 	
 	public void setId(int id)
 	{
@@ -90,6 +91,15 @@ public class PostDTO {
 	public String getFile_name()
 	{
 		return file_name;
+	}
+	
+	public void setIs_notice(int is_notice)
+	{
+		this.is_notice = is_notice;
+	}
+	public int getIs_notice()
+	{
+		return is_notice;
 	}
 	
 }
