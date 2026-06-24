@@ -123,7 +123,7 @@
                 <a href="Login">로그인</a>
                 <a href="Signup">회원가입</a>
             <% } else { %>
-                <span class="welcome-text">환영합니다!</span>
+                <a href="MyPage">마이페이지</a>    
                 <a href="Logout">로그아웃</a>
             <% } %>
         </div>

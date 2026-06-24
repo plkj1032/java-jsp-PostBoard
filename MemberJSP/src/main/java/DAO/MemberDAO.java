@@ -94,7 +94,8 @@ public class MemberDAO {
 				loginUser.setAge(rs.getInt("age"));
 				loginUser.setEmail(rs.getString("email"));
 				loginUser.setRole(rs.getString("role"));
-				
+				loginUser.setAddress(rs.getString("address"));
+				loginUser.setDetail_address(rs.getString("detail_address"));
 				return loginUser;
 			}
 			
@@ -170,6 +171,37 @@ public class MemberDAO {
         }
         return isSuccess;
     }
+    
+ // MemberDAO.java 내부에 추가할 메서드 예시
+    public int updateMember(MemberDTO dto) {
+        //PreparedStatement pstmt = null;
+        int result = 0;
+        
+        // DB 쿼리문 (테이블명과 컬럼명은 본인 DB 환경에 맞게 매칭하세요)
+        // 여기서는 name을 식별 조건(WHERE)으로 삼아 업데이트합니다.
+        String sql = "UPDATE members SET name = ?, age = ?, address = ?, detail_address = ? WHERE id = ?";
+        
+        try {
+            // 본인이 기존에 구현해둔 DB 연결 메서드를 호출하세요 (예: getConnection())
+        	Connection conn = DBConnection.getConnection(); 
+        	PreparedStatement ps = conn.prepareStatement(sql);
+        	
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, dto.getName());
+            ps.setInt(2, dto.getAge());
+            ps.setString(3, dto.getAddress());
+            ps.setString(4, dto.getDetail_address());
+            ps.setInt(5, dto.getId());
+            
+            result = ps.executeUpdate(); // 성공하면 1 반환
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return result;
+    }
+    
     
  // 자원 해제 공통 메서드
     private void closeAll(ResultSet rs, PreparedStatement pstmt, Connection conn) {
