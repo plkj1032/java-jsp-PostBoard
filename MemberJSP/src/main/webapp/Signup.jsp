@@ -275,17 +275,19 @@
     </div>
     
     <!-- 주소 API script 출력 -->
+    <!-- 카카오가 만든 주소검색 프로그램을 JSP로 들고옴 개쩜.. -->
     <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
     <script>
     function execPostcode(){
 		new kakao.Postcode({
 			oncomplete: function(data){
-				document.getElementById("postcode").value = data.zonecode;
-				document.getElementById("address").value = data.address;
+				//alert(JSON.stringify(data));
+				document.getElementById("postcode").value = data.zonecode; // data.zonecode -> 우편번호 / input에 자동 입력
+				document.getElementById("address").value = data.address; // ex. 서울특별시 강남구 테헤란로 212
 				document.getElementById("detail_address").focus();
 			}
-		}).open();
+		}).open(); // 주소 검색 창 열기 ( 검색 -> 선택 -> 카카오 서버가 주소 정보를 반환 -> data안에 들어감)
 	}
     
     </script>

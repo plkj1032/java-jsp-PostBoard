@@ -205,6 +205,9 @@
         background-color: #dee2e6;
     }
 </style>
+<!-- 노트 기능 추가 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 </head>
 <body>
 
@@ -228,7 +231,7 @@
             <div class="write-box">
                 <h1>📝 게시글 작성</h1>
                 
-                <form action="PostWrite" method="post" enctype="multipart/form-data">
+                <form action="PostWrite" method="post" enctype="multipart/form-data" onsubmit="return saveContent();">
                     <div class="form-group">
                         <label for="title">게시글 제목</label>
                         <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력해주세요" required>
@@ -236,7 +239,12 @@
 
                     <div class="form-group">
                         <label for="content">게시글 내용</label>
+                        <!-- 게시글 내용 추가! -->
+                        <div id="editor"></div>
+							<textarea id="content" name="content" style="display:none;"></textarea>
+                        <!-- 
                         <textarea id="content" name="content" class="form-control" placeholder="내용을 작성해주세요" required></textarea>
+                         -->
                     </div>
                     
                     <!-- 파일 등록 -->
@@ -261,8 +269,27 @@
                 </form>
             </div>
         </main>
-        
     </div>
-
+    <!-- 게시글 에디터 추가! -->
+	<script>
+		const editor = new toastui.Editor({
+		    el: document.querySelector('#editor'),
+		    height: '400px',
+		    initialEditType: 'wysiwyg',
+		    previewStyle: 'vertical'
+		});
+		
+		function saveContent() {
+		    const html = editor.getHTML();
+		
+		    if(html.trim() === "" || html.trim() === "<p><br></p>") {
+		        alert("내용을 입력해주세요!");
+		        return false;
+		    }
+		
+		    document.getElementById("content").value = html;
+		    return true;
+		}
+	</script>
 </body>
 </html>
