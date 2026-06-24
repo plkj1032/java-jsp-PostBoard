@@ -36,7 +36,8 @@ public class MemberDAO {
 	public boolean insertMember(MemberDTO dto)
 	{
 		String sql = "insert into "
-				+ "members(name,age,email,password) VALUES (?,?,?,?)";
+				+ "members(name,age,postcode,address,detail_address,email,password) "
+				+ "VALUES (?,?,?,?,?,?,?)";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -45,9 +46,12 @@ public class MemberDAO {
 				){
 			ps.setString(1,dto.getName());
 			ps.setInt(2, dto.getAge());
-			ps.setString(3, dto.getEmail());
+			ps.setString(3, dto.getPostcode());
+			ps.setString(4, dto.getAddress());
+			ps.setString(5, dto.getDetail_address());
+			ps.setString(6, dto.getEmail());
 			String hashPw = PasswordUtil.encrypt(dto.getPassword());
-			ps.setString(4, hashPw);
+			ps.setString(7, hashPw);
 			
 			int result = ps.executeUpdate();
 			

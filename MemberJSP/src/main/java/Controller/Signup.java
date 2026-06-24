@@ -60,11 +60,17 @@ public class Signup extends HttpServlet {
 		{
 			String name = request.getParameter("name");
 			String age = request.getParameter("age");
+			String postcode = request.getParameter("postcode");
+			String address = request.getParameter("address");
+			String detail_address = request.getParameter("detail_address");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			
 			if(name == null || name.trim().isEmpty() ||
 				age == null || age.trim().isEmpty() ||
+				postcode == null || postcode.trim().isEmpty() ||
+				address == null || address.trim().isEmpty() ||
+				detail_address == null || detail_address.trim().isEmpty() ||
 				email == null || email.trim().isEmpty() ||
 				password == null || password.trim().isEmpty())
 			{
@@ -78,6 +84,9 @@ public class Signup extends HttpServlet {
 			
 			dto.setName(name);
 			dto.setAge(i_age);
+			dto.setPostcode(postcode);
+			dto.setAddress(detail_address);
+			dto.setDetail_address(detail_address);
 			dto.setEmail(email);
 			dto.setPassword(password);
 			

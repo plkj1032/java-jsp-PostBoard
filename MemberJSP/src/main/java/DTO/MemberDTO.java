@@ -4,6 +4,9 @@ public class MemberDTO {
 	private int id;
 	private String name;
 	private int age;
+	private String postcode;
+	private String address;
+	private String detail_address;
 	private String email;
 	private String password;
 	private String role;
@@ -37,6 +40,33 @@ public class MemberDTO {
 	public int getAge()
 	{
 		return age;
+	}
+	
+	public void setPostcode(String postcode)
+	{
+		this.postcode = postcode;
+	}
+	public String getPostcode()
+	{
+		return postcode;
+	}
+	
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
+	public String getAddress()
+	{
+		return address;
+	}
+	
+	public void setDetail_address(String detail_address)
+	{
+		this.detail_address = detail_address;
+	}
+	public String getDetail_address()
+	{
+		return detail_address;
 	}
 	
 	public void setEmail(String email)

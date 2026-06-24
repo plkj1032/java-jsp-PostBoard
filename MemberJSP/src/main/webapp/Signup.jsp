@@ -245,6 +245,15 @@
                         <label for="email">아이디</label>
                         <input type="text" id="email" name="email" class="form-control" placeholder="사용할 아이디를 입력해주세요" required>
                     </div>
+                    
+                    <!-- 주소 추가 -->
+                    <div class="form-group">
+                    	<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+                    	<button type="button" onclick="execPostcode()">주소 검색</button>
+                    	
+                    	<input type="text" id="address" name="address" placeholder="주소" readonly>
+                    	<input type="text" id="detail_address" name="detail_address" placeholder="상세주소">
+                    </div>
 
                     <div class="form-group">
                         <label for="password">비밀번호</label>
@@ -264,6 +273,22 @@
         </main>
         
     </div>
+    
+    <!-- 주소 API script 출력 -->
+    <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+    <script>
+    function execPostcode(){
+		new kakao.Postcode({
+			oncomplete: function(data){
+				document.getElementById("postcode").value = data.zonecode;
+				document.getElementById("address").value = data.address;
+				document.getElementById("detail_address").focus();
+			}
+		}).open();
+	}
+    
+    </script>
 
 </body>
 </html>

@@ -50,7 +50,7 @@ public class PostDAO {
 				+ "JOIN members m ON p.member_id = m.id "
 				+ "LEFT JOIN comments c ON c.post_id = p.id "
 				+ "GROUP BY p.id "
-				+ "ORDER BY p.is_notice DESC, p.id ASC "
+				+ "ORDER BY p.is_notice DESC, p.id DESC "
 				+ "LIMIT ?,?";
 		
 		List<PostDTO> list = new ArrayList<>();
